@@ -1,0 +1,55 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+    container_name: springboot_app
+    depends_on:
+      - db
+      - minio
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/minhadatabase
+      SPRING_DATASOURCE_USERNAME: meuusuario
+      SPRING_DATASOURCE_PASSWORD: minhasenha
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+    ports:
+      - "8080:8080"
+
+  db:
+    image: postgres:latest
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: minhadatabase
+      POSTGRES_USER: meuusuario
+      POSTGRES_PASSWORD: minhasenha
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  minio:
+    image: minio/minio
+    container_name: minio_storage
+    environment:
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+    command: server --console-address ":9001" /data
+    networks:
+      - minio_network
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+
+networks:
+  minio_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  minio_data:
