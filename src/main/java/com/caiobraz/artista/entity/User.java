@@ -40,6 +40,7 @@ public class User implements UserDetails {
     @Column(name = "ROLE")
     private Role role;
 
+    @Column(name = "ENABLED")
     private boolean enabled = true;
 
     @Override

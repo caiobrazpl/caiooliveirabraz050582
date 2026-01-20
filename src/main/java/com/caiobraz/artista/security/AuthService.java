@@ -10,6 +10,8 @@ import com.caiobraz.artista.repository.TokenRepository;
 import com.caiobraz.artista.repository.UserRepository;
 import com.caiobraz.artista.security.dto.AuthRequest;
 import com.caiobraz.artista.security.dto.AuthResponse;
+import com.caiobraz.artista.service.exception.AuthException;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -22,10 +24,6 @@ public class AuthService {
     private final AuthenticationManager authManager;
 
     public AuthResponse authenticate(AuthRequest request) {
-        authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.username(), request.password())
-        );
-
         User user = userRepository.findByUsername(request.username()).orElseThrow();
         String jwt = jwtService.generateToken(user);
         String refresh = jwtService.generateRefreshToken(user);
@@ -37,6 +35,10 @@ public class AuthService {
         token.setRevoked(false);
         tokenRepository.save(token);
 
+        authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.username(), request.password(), user.getAuthorities())
+        );
+
         return new AuthResponse(jwt, refresh);
     }
 
@@ -44,11 +46,16 @@ public class AuthService {
         var username = jwtService.extractUsername(refreshToken);
         var user = userRepository.findByUsername(username).orElseThrow();
 
-        tokenRepository.findByToken(refreshToken)
+        var token = tokenRepository.findByToken(refreshToken)
                 .filter(t -> !t.isExpired() && !t.isRevoked())
-                .orElseThrow(() -> new RuntimeException("Refresh token inválido"));
+                .orElseThrow(() -> new AuthException("Refresh token inválido"));
+
+        token.setExpired(true);
+        tokenRepository.save(token);
 
         String newAccess = jwtService.generateToken(user);
-        return new AuthResponse(newAccess, refreshToken); // ou gere um novo
+        String newRefresh = jwtService.generateRefreshToken(user);
+
+        return new AuthResponse(newAccess, newRefresh); // ou gere um novo
     }
 }
