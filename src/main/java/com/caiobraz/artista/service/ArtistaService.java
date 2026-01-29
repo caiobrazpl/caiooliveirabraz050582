@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
+import com.caiobraz.artista.controller.dto.ArtistaRequestDTO;
 import com.caiobraz.artista.entity.Artista;
 import com.caiobraz.artista.repository.ArtistaRepository;
 import com.caiobraz.artista.service.exception.NotFoundException;
@@ -34,5 +35,23 @@ public class ArtistaService {
                 Example.of(filtro, defaultMatcher()),
                 pageable
         );
+    }
+
+    public Long criar(ArtistaRequestDTO requestDTO) {
+        var artista = requestDTO.entidade();
+        artista.setAtivo(true);
+
+        this.artistaRepository.save(artista);
+
+        return artista.getId();
+    }
+
+    public void editar(Long id, ArtistaRequestDTO requestDTO) {
+        var artista = requestDTO.entidade();
+
+        var artistaAlterado = this.buscar(id);
+        artistaAlterado.setNome(artista.getNome());
+
+        this.artistaRepository.save(artistaAlterado);
     }
 }

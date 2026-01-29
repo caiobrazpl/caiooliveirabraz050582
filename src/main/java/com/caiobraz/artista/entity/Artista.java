@@ -11,10 +11,12 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "ARTISTA")
 public class Artista {
@@ -32,4 +34,8 @@ public class Artista {
 
     @OneToMany(mappedBy = "artista")
     private List<ArtistaAlbum> artistaAlbums;
+
+    public Artista(String nome) {
+        this.nome = nome;
+    }
 }
