@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +34,7 @@ public class ArtistaController {
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<ArtistaListDTO> buscar(@PathVariable Long id) {
-        var registro = this.artistaService.buscar(id);
+        var registro = this.artistaService.buscarAtivo(id);
         var response = new ArtistaListDTO(registro);
 
         return ResponseEntity.ok(response);
@@ -72,4 +73,11 @@ public class ArtistaController {
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        this.artistaService.excluir(id);
+
+        return ResponseEntity.ok().build();
+    }
 }

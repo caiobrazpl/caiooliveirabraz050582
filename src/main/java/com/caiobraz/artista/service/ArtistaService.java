@@ -21,8 +21,13 @@ public class ArtistaService {
 
     private final ArtistaRepository artistaRepository;
 
-    public Artista buscar(Long id) {
+    public Artista buscarPorId(Long id) {
         return artistaRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("erro.naoEncontrado"));
+    }
+
+    public Artista buscarAtivo(Long id) {
+        return artistaRepository.findByIdAndAtivo(id, true)
                 .orElseThrow(() -> new NotFoundException("erro.naoEncontrado"));
     }
 
@@ -49,9 +54,16 @@ public class ArtistaService {
     public void editar(Long id, ArtistaRequestDTO requestDTO) {
         var artista = requestDTO.entidade();
 
-        var artistaAlterado = this.buscar(id);
+        var artistaAlterado = this.buscarPorId(id);
         artistaAlterado.setNome(artista.getNome());
 
         this.artistaRepository.save(artistaAlterado);
+    }
+
+    public void excluir(Long id) {
+        var artista = this.buscarPorId(id);
+        artista.setAtivo(false);
+
+        this.artistaRepository.save(artista);
     }
 }
