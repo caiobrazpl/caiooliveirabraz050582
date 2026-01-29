@@ -1,20 +1,28 @@
 version: '3.9'
 
 services:
+
   app:
     build:
       context: .
     container_name: springboot_app
+    restart: unless-stopped
+
     depends_on:
-      - db
-      - minio
+      db:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/minhadatabase
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/artista_db
       SPRING_DATASOURCE_USERNAME: meuusuario
       SPRING_DATASOURCE_PASSWORD: minhasenha
+
       MINIO_ENDPOINT: http://minio:9000
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
+
     ports:
       - "8080:8080"
 
@@ -22,33 +30,46 @@ services:
     image: postgres:latest
     container_name: postgres_db
     restart: always
+
     environment:
-      POSTGRES_DB: minhadatabase
+      POSTGRES_DB: artista_db
       POSTGRES_USER: meuusuario
       POSTGRES_PASSWORD: minhasenha
+
     ports:
       - "5432:5432"
+
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U meuusuario"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   minio:
     image: minio/minio
     container_name: minio_storage
+
+    command: server /data --console-address ":9001"
+
     environment:
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
-    command: server --console-address ":9001" /data
-    networks:
-      - minio_network
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+
     ports:
       - "9000:9000"
       - "9001:9001"
+
     volumes:
       - minio_data:/data
 
-networks:
-  minio_network:
-    driver: bridge
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:
