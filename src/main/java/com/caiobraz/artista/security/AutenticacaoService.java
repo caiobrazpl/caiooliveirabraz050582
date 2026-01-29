@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.caiobraz.artista.entity.Token;
 import com.caiobraz.artista.entity.Usuario;
 import com.caiobraz.artista.repository.TokenRepository;
-import com.caiobraz.artista.repository.UserRepository;
+import com.caiobraz.artista.repository.UsuarioRepository;
 import com.caiobraz.artista.security.dto.AuthRequest;
 import com.caiobraz.artista.security.dto.AuthResponse;
 import com.caiobraz.artista.service.exception.AuthException;
@@ -16,15 +16,15 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class AuthService {
+public class AutenticacaoService {
 
-    private final UserRepository userRepository;
+    private final UsuarioRepository usuarioRepository;
     private final TokenRepository tokenRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authManager;
 
     public AuthResponse authenticate(AuthRequest request) {
-        Usuario usuario = userRepository.findByUsername(request.username()).orElseThrow();
+        Usuario usuario = usuarioRepository.findByUsername(request.username()).orElseThrow();
         String jwt = jwtService.generateToken(usuario);
         String refresh = jwtService.generateRefreshToken(usuario);
 
@@ -44,10 +44,10 @@ public class AuthService {
 
     public AuthResponse refreshToken(String refreshToken) {
         var username = jwtService.extractUsername(refreshToken);
-        var user = userRepository.findByUsername(username).orElseThrow();
+        var user = usuarioRepository.findByUsername(username).orElseThrow();
 
         var token = tokenRepository.findByToken(refreshToken)
-                .filter(t -> !t.isExpirado() && !t.isRevogado())
+                .filter(t -> !t.getExpirado() && !t.getRevogado())
                 .orElseThrow(() -> new AuthException("Refresh token inválido"));
 
         token.setExpirado(true);

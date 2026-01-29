@@ -35,6 +35,6 @@ public class AlbumFoto {
     @Column(name = "BUCKET")
     private String bucket;
 
-    @Column(name = "BUCKET")
+    @Column(name = "DATA_UPLOAD")
     private LocalDateTime dataUpload;
 }
