@@ -5,7 +5,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 
 import com.caiobraz.artista.entity.Token;
-import com.caiobraz.artista.entity.User;
+import com.caiobraz.artista.entity.Usuario;
 import com.caiobraz.artista.repository.TokenRepository;
 import com.caiobraz.artista.repository.UserRepository;
 import com.caiobraz.artista.security.dto.AuthRequest;
@@ -24,19 +24,19 @@ public class AuthService {
     private final AuthenticationManager authManager;
 
     public AuthResponse authenticate(AuthRequest request) {
-        User user = userRepository.findByUsername(request.username()).orElseThrow();
-        String jwt = jwtService.generateToken(user);
-        String refresh = jwtService.generateRefreshToken(user);
+        Usuario usuario = userRepository.findByUsername(request.username()).orElseThrow();
+        String jwt = jwtService.generateToken(usuario);
+        String refresh = jwtService.generateRefreshToken(usuario);
 
         Token token = new Token();
         token.setToken(refresh);
-        token.setUser(user);
-        token.setExpired(false);
-        token.setRevoked(false);
+        token.setUsuario(usuario);
+        token.setExpirado(false);
+        token.setRevogado(false);
         tokenRepository.save(token);
 
         authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.username(), request.password(), user.getAuthorities())
+                new UsernamePasswordAuthenticationToken(request.username(), request.password(), usuario.getAuthorities())
         );
 
         return new AuthResponse(jwt, refresh);
@@ -47,10 +47,10 @@ public class AuthService {
         var user = userRepository.findByUsername(username).orElseThrow();
 
         var token = tokenRepository.findByToken(refreshToken)
-                .filter(t -> !t.isExpired() && !t.isRevoked())
+                .filter(t -> !t.isExpirado() && !t.isRevogado())
                 .orElseThrow(() -> new AuthException("Refresh token inválido"));
 
-        token.setExpired(true);
+        token.setExpirado(true);
         tokenRepository.save(token);
 
         String newAccess = jwtService.generateToken(user);

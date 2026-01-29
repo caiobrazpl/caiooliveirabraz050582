@@ -22,30 +22,30 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "USER_APP")
-public class User implements UserDetails {
+@Table(name = "USUARIO")
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "USERNAME")
+    @Column(name = "LOGIN")
     private String username;
 
-    @Column(name = "PASSWORD")
+    @Column(name = "SENHA")
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "ROLE")
-    private Role role;
+    @Column(name = "PERFIL")
+    private Role perfil;
 
-    @Column(name = "ENABLED")
-    private boolean enabled = true;
+    @Column(name = "ATIVO")
+    private Boolean ativo = true;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + perfil.name()));
     }
 
     @Override
@@ -63,8 +63,7 @@ public class User implements UserDetails {
         return true;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return enabled;
+    public Boolean isAtivo() {
+        return ativo;
     }
 }

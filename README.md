@@ -72,7 +72,7 @@ docker-compose up --build
     - **Usuário/Senha:** `minioadmin` / `minioadmin`
 - **PostgreSQL:**
     - Porta: `5432`
-    - Banco: `minhadatabase`
+    - Banco: `artista_db`
     - Usuário: `meuusuario`
     - Senha: `minhasenha`
 
