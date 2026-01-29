@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
-import com.caiobraz.artista.repository.UserRepository;
+import com.caiobraz.artista.repository.UsuarioRepository;
 
 @RequiredArgsConstructor
 @Service
-public class UserService implements UserDetailsService {
+public class UsuarioService implements UserDetailsService {
 
-    private final UserRepository repository;
+    private final UsuarioRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

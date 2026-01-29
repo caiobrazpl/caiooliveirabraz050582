@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
-import com.caiobraz.artista.security.AuthService;
+import com.caiobraz.artista.security.AutenticacaoService;
 import com.caiobraz.artista.security.dto.AuthRequest;
 import com.caiobraz.artista.security.dto.AuthResponse;
 import com.caiobraz.artista.security.dto.RefreshRequest;
@@ -20,15 +20,15 @@ import com.caiobraz.artista.security.dto.RefreshRequest;
 @RequestMapping("/auth")
 public class AutenticacaoController {
 
-    private final AuthService authService;
+    private final AutenticacaoService autenticacaoService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request) {
-        return ResponseEntity.ok(authService.authenticate(request));
+        return ResponseEntity.ok(autenticacaoService.authenticate(request));
     }
 
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refresh(@Valid @RequestBody RefreshRequest request) {
-        return ResponseEntity.ok(authService.refreshToken(request.refreshToken()));
+        return ResponseEntity.ok(autenticacaoService.refreshToken(request.refreshToken()));
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -23,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 
-import com.caiobraz.artista.service.UserService;
+import com.caiobraz.artista.service.UsuarioService;
 
 @RequiredArgsConstructor
 @Configuration
@@ -31,8 +30,8 @@ import com.caiobraz.artista.service.UserService;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final UserService userService;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final UsuarioService usuarioService;
+    private final AutenticacaoJwtFilter autenticacaoJwtFilter;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -46,8 +45,8 @@ public class SecurityConfig {
                     authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     authorize.anyRequest().authenticated();
                 })
-                .userDetailsService(this.userService)
-                .addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .userDetailsService(this.usuarioService)
+                .addFilterBefore(this.autenticacaoJwtFilter, UsernamePasswordAuthenticationFilter.class)
 //                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(jwtDecoder()).jwtAuthenticationConverter(jwtAuthenticationConverter())))
 //                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
