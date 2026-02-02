@@ -1,5 +1,7 @@
 package com.caiobraz.artista.controller;
 
+import java.util.List;
+
 import jakarta.validation.Valid;
 
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import lombok.RequiredArgsConstructor;
@@ -78,5 +81,13 @@ public class AlbumController {
         this.albumService.excluir(id);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PutMapping("/{id}/fotos")
+    public ResponseEntity<List<String>> uploadFoto(@PathVariable Long id, @RequestParam("arquivos") List<MultipartFile> arquivos) {
+        var url = this.albumService.uploadFotos(id, arquivos);
+
+        return ResponseEntity.ok(url);
     }
 }

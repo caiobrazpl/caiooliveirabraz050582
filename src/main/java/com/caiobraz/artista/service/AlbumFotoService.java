@@ -1,0 +1,36 @@
+package com.caiobraz.artista.service;
+
+import java.time.LocalDateTime;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import lombok.RequiredArgsConstructor;
+
+import com.caiobraz.artista.entity.Album;
+import com.caiobraz.artista.entity.AlbumFoto;
+import com.caiobraz.artista.repository.AlbumFotoRepository;
+
+@RequiredArgsConstructor
+@Service
+public class AlbumFotoService {
+
+    private final AlbumFotoRepository albumFotoRepository;
+    private final MinioService minioService;
+
+    @Value("${minio.bucket-name}")
+    private String bucket;
+
+    public AlbumFoto criar(Album album, MultipartFile file) {
+        String hash = this.minioService.enviarArquivo(file);
+
+        var albumFoto = new AlbumFoto();
+        albumFoto.setAlbum(album);
+        albumFoto.setHash(hash);
+        albumFoto.setDataUpload(LocalDateTime.now());
+        albumFoto.setBucket(this.bucket);
+
+        return this.albumFotoRepository.save(albumFoto);
+    }
+}

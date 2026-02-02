@@ -5,6 +5,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -42,6 +43,7 @@ public class ArtistaService {
         );
     }
 
+    @Transactional
     public Long criar(ArtistaRequestDTO requestDTO) {
         var artista = requestDTO.entidade();
         artista.setAtivo(true);
@@ -51,6 +53,7 @@ public class ArtistaService {
         return artista.getId();
     }
 
+    @Transactional
     public void editar(Long id, ArtistaRequestDTO requestDTO) {
         var artista = requestDTO.entidade();
 
@@ -60,6 +63,7 @@ public class ArtistaService {
         this.artistaRepository.save(artistaAlterado);
     }
 
+    @Transactional
     public void excluir(Long id) {
         var artista = this.buscarPorId(id);
         artista.setAtivo(false);
