@@ -27,7 +27,7 @@ import com.caiobraz.artista.service.ArtistaService;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/artistas")
+@RequestMapping("/${app.api.version}/artistas")
 public class ArtistaController {
 
     private final ArtistaService artistaService;

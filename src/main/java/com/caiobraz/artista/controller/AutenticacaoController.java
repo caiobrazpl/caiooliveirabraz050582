@@ -17,7 +17,7 @@ import com.caiobraz.artista.security.dto.RefreshRequest;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/${app.api.version}/auth")
 public class AutenticacaoController {
 
     private final AutenticacaoService autenticacaoService;

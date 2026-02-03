@@ -30,7 +30,7 @@ import com.caiobraz.artista.service.AlbumService;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/albums")
+@RequestMapping("/${app.api.version}/albums")
 public class AlbumController {
 
     private final AlbumService albumService;
