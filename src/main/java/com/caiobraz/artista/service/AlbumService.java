@@ -42,7 +42,7 @@ public class AlbumService {
     public Page<Album> listar(String nome, String tipoArtista, Pageable pageable) {
         return albumRepository.listar(
                 StringUtils.isEmpty(nome) ? null : "%" + nome + "%",
-                TipoArtista.byDescricao(tipoArtista),
+                StringUtils.isEmpty(tipoArtista) ? null : TipoArtista.byDescricao(tipoArtista),
                 pageable
         );
     }
