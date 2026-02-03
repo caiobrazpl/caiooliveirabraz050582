@@ -1,5 +1,7 @@
 package com.caiobraz.artista.controller;
 
+import java.util.List;
+
 import jakarta.validation.Valid;
 
 import org.springframework.data.domain.Pageable;
@@ -14,48 +16,50 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import lombok.RequiredArgsConstructor;
 
-import com.caiobraz.artista.controller.dto.ArtistaListDTO;
-import com.caiobraz.artista.controller.dto.ArtistaRequestDTO;
+import com.caiobraz.artista.controller.dto.AlbumListDTO;
+import com.caiobraz.artista.controller.dto.AlbumRequestDTO;
 import com.caiobraz.artista.controller.dto.Paginacao;
 import com.caiobraz.artista.controller.dto.ResponseListDTO;
-import com.caiobraz.artista.controller.dto.VincularAlbumRequestDTO;
-import com.caiobraz.artista.service.ArtistaService;
+import com.caiobraz.artista.entity.enums.TipoArtista;
+import com.caiobraz.artista.service.AlbumService;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/artistas")
-public class ArtistaController {
+@RequestMapping("/albums")
+public class AlbumController {
 
-    private final ArtistaService artistaService;
+    private final AlbumService albumService;
 
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @GetMapping("/{id}")
-    public ResponseEntity<ArtistaListDTO> buscar(@PathVariable Long id) {
-        var registro = this.artistaService.buscarAtivo(id);
-        var response = new ArtistaListDTO(registro);
+    public ResponseEntity<AlbumListDTO> buscar(@PathVariable Long id) {
+        var registro = this.albumService.buscarAtivo(id);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(new AlbumListDTO(registro));
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @GetMapping
-    public ResponseEntity<ResponseListDTO<ArtistaListDTO>> listar(
-            @RequestParam(required = false) String nome, Pageable pageable) {
+    public ResponseEntity<ResponseListDTO<AlbumListDTO>> listar(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String tipoArtista,
+            Pageable pageable) {
 
-        var list = artistaService.listar(nome, pageable);
-        var response = list.stream().map(ArtistaListDTO::new).toList();
+        var list = albumService.listar(nome, tipoArtista, pageable);
+        var response = list.stream().map(AlbumListDTO::new).toList();
 
         return ResponseEntity.ok(new ResponseListDTO<>(response, new Paginacao(list)));
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @PostMapping
-    public ResponseEntity<Void> criar(@Valid @RequestBody ArtistaRequestDTO requestDTO) {
-        var id = this.artistaService.criar(requestDTO);
+    public ResponseEntity<Void> criar(@Valid @RequestBody AlbumRequestDTO requestDTO) {
+        var id = this.albumService.criar(requestDTO);
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -68,8 +72,8 @@ public class ArtistaController {
 
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<Void> editar(@PathVariable Long id, @Valid @RequestBody ArtistaRequestDTO requestDTO) {
-        this.artistaService.editar(id, requestDTO);
+    public ResponseEntity<Void> editar(@PathVariable Long id, @Valid @RequestBody AlbumRequestDTO requestDTO) {
+        this.albumService.editar(id, requestDTO);
 
         return ResponseEntity.ok().build();
     }
@@ -77,24 +81,16 @@ public class ArtistaController {
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
-        this.artistaService.excluir(id);
+        this.albumService.excluir(id);
 
         return ResponseEntity.ok().build();
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
-    @PutMapping("/{id}/albums")
-    public ResponseEntity<Void> vincularAlbums(@PathVariable Long id, @Valid @RequestBody VincularAlbumRequestDTO requestDTO) {
-        this.artistaService.vincularAlbums(id, requestDTO);
+    @PutMapping("/{id}/fotos")
+    public ResponseEntity<List<String>> uploadFoto(@PathVariable Long id, @RequestParam("arquivos") List<MultipartFile> arquivos) {
+        var url = this.albumService.uploadFotos(id, arquivos);
 
-        return ResponseEntity.ok().build();
-    }
-
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
-    @DeleteMapping("/{id}/albums")
-    public ResponseEntity<Void> removerVinculoAlbums(@PathVariable Long id, @Valid @RequestBody VincularAlbumRequestDTO requestDTO) {
-        this.artistaService.removerVinculoAlbums(id, requestDTO);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(url);
     }
 }

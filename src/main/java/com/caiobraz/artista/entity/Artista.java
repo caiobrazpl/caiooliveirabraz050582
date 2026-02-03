@@ -14,6 +14,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import com.caiobraz.artista.entity.enums.TipoArtista;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,6 +30,9 @@ public class Artista {
 
     @Column(name = "NOME")
     private String nome;
+
+    @Column(name = "TIPO")
+    private TipoArtista tipoArtista;
 
     @Column(name = "ATIVO")
     private Boolean ativo;

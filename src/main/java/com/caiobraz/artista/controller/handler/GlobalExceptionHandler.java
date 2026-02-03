@@ -8,6 +8,7 @@ import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -142,6 +143,13 @@ public class GlobalExceptionHandler {
             problemDetail.setProperty(i++ + "", detailMessageArgument);
         }
         return problemDetail;
+    }
+
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ProblemDetail tratarHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+        String mensagem = getMessage(exception);
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, mensagem);
     }
 
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
