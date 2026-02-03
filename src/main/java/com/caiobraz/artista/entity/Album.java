@@ -1,10 +1,13 @@
 package com.caiobraz.artista.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import lombok.Getter;
@@ -28,6 +31,13 @@ public class Album {
 
     @Column(name = "ATIVO")
     private Boolean ativo;
+
+    @OneToMany(mappedBy = "album")
+    private List<ArtistaAlbum> artistaAlbums;
+
+    public Album(Long id) {
+        this.id = id;
+    }
 
     public Album(String nome) {
         this.nome = nome;

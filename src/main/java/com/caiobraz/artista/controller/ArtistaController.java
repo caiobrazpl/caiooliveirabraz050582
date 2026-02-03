@@ -22,6 +22,7 @@ import com.caiobraz.artista.controller.dto.ArtistaListDTO;
 import com.caiobraz.artista.controller.dto.ArtistaRequestDTO;
 import com.caiobraz.artista.controller.dto.Paginacao;
 import com.caiobraz.artista.controller.dto.ResponseListDTO;
+import com.caiobraz.artista.controller.dto.VincularAlbumRequestDTO;
 import com.caiobraz.artista.service.ArtistaService;
 
 @RequiredArgsConstructor
@@ -77,6 +78,22 @@ public class ArtistaController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         this.artistaService.excluir(id);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PutMapping("/{id}/albums")
+    public ResponseEntity<Void> vincularAlbums(@PathVariable Long id, @Valid @RequestBody VincularAlbumRequestDTO requestDTO) {
+        this.artistaService.vincularAlbums(id, requestDTO);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @DeleteMapping("/{id}/albums")
+    public ResponseEntity<Void> removerVinculoAlbums(@PathVariable Long id, @Valid @RequestBody VincularAlbumRequestDTO requestDTO) {
+        this.artistaService.removerVinculoAlbums(id, requestDTO);
 
         return ResponseEntity.ok().build();
     }

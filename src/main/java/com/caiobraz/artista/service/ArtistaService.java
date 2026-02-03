@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import com.caiobraz.artista.controller.dto.ArtistaRequestDTO;
+import com.caiobraz.artista.controller.dto.VincularAlbumRequestDTO;
 import com.caiobraz.artista.entity.Artista;
 import com.caiobraz.artista.repository.ArtistaRepository;
 import com.caiobraz.artista.service.exception.NotFoundException;
@@ -21,6 +22,8 @@ import static com.caiobraz.artista.service.util.ExampleMatcherUtil.defaultMatche
 public class ArtistaService {
 
     private final ArtistaRepository artistaRepository;
+    private final AlbumService albumService;
+    private final ArtistaAlbumService artistaAlbumService;
 
     public Artista buscarPorId(Long id) {
         return artistaRepository.findById(id)
@@ -69,5 +72,27 @@ public class ArtistaService {
         artista.setAtivo(false);
 
         this.artistaRepository.save(artista);
+    }
+
+    @Transactional
+    public void vincularAlbums(Long id, VincularAlbumRequestDTO requestDTO) {
+        var artista = this.buscarAtivo(id);
+
+        for (Long idAlbum : requestDTO.idsAlbums()) {
+            var album = this.albumService.buscarAtivo(idAlbum);
+
+            this.artistaAlbumService.criar(artista, album);
+        }
+    }
+
+    @Transactional
+    public void removerVinculoAlbums(Long id, VincularAlbumRequestDTO requestDTO) {
+        var artista = this.buscarAtivo(id);
+
+        for (Long idAlbum : requestDTO.idsAlbums()) {
+            var album = this.albumService.buscarPorId(idAlbum);
+
+            this.artistaAlbumService.removerVinculo(artista, album);
+        }
     }
 }

@@ -71,7 +71,7 @@ public class MinioService {
                     .method(Method.GET)
                     .bucket(bucket)
                     .object(PASTA_FOTOS + objectName)
-                    .expiry(5, TimeUnit.MINUTES)
+                    .expiry(30, TimeUnit.MINUTES)
                     .build();
 
             return this.minioClient.getPresignedObjectUrl(getOptions);
