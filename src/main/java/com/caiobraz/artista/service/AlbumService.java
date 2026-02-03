@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.caiobraz.artista.controller.dto.AlbumRequestDTO;
 import com.caiobraz.artista.entity.Album;
+import com.caiobraz.artista.entity.enums.TipoArtista;
 import com.caiobraz.artista.repository.AlbumRepository;
 import com.caiobraz.artista.service.exception.NotFoundException;
 
@@ -38,13 +39,10 @@ public class AlbumService {
                 .orElseThrow(() -> new NotFoundException("erro.naoEncontrado"));
     }
 
-    public Page<Album> listar(String nomeFiltro, Pageable pageable) {
-        var filtro = new Album();
-        filtro.setAtivo(true);
-        filtro.setNome(StringUtils.isEmpty(nomeFiltro) ? null : nomeFiltro);
-
-        return albumRepository.findAll(
-                Example.of(filtro, defaultMatcher()),
+    public Page<Album> listar(String nome, String tipoArtista, Pageable pageable) {
+        return albumRepository.listar(
+                StringUtils.isEmpty(nome) ? null : "%" + nome + "%",
+                TipoArtista.byDescricao(tipoArtista),
                 pageable
         );
     }

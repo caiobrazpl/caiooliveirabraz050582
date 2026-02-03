@@ -25,6 +25,7 @@ import com.caiobraz.artista.controller.dto.AlbumListDTO;
 import com.caiobraz.artista.controller.dto.AlbumRequestDTO;
 import com.caiobraz.artista.controller.dto.Paginacao;
 import com.caiobraz.artista.controller.dto.ResponseListDTO;
+import com.caiobraz.artista.entity.enums.TipoArtista;
 import com.caiobraz.artista.service.AlbumService;
 
 @RequiredArgsConstructor
@@ -45,9 +46,11 @@ public class AlbumController {
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<ResponseListDTO<AlbumListDTO>> listar(
-            @RequestParam(required = false) String nome, Pageable pageable) {
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String tipoArtista,
+            Pageable pageable) {
 
-        var list = albumService.listar(nome, pageable);
+        var list = albumService.listar(nome, tipoArtista, pageable);
         var response = list.stream().map(AlbumListDTO::new).toList();
 
         return ResponseEntity.ok(new ResponseListDTO<>(response, new Paginacao(list)));
