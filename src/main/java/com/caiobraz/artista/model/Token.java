@@ -1,4 +1,4 @@
-package com.caiobraz.artista.entity;
+package com.caiobraz.artista.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,19 +15,24 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "ARTISTA_ALBUM")
-public class ArtistaAlbum {
+@Table(name = "TOKEN")
+public class Token {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "ID_ARTISTA")
-    private Artista artista;
+    @Column(name = "TOKEN")
+    private String token;
+
+    @Column(name = "REVOGADO")
+    private Boolean revogado;
+
+    @Column(name = "EXPIRADO")
+    private Boolean expirado;
 
     @ManyToOne
-    @JoinColumn(name = "ID_ALBUM")
-    private Album album;
+    @JoinColumn(name = "ID_USUARIO")
+    private Usuario usuario;
 }

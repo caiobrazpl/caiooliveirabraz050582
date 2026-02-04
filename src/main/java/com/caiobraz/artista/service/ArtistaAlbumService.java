@@ -4,9 +4,9 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
-import com.caiobraz.artista.entity.Album;
-import com.caiobraz.artista.entity.Artista;
-import com.caiobraz.artista.entity.ArtistaAlbum;
+import com.caiobraz.artista.model.Album;
+import com.caiobraz.artista.model.Artista;
+import com.caiobraz.artista.model.ArtistaAlbum;
 import com.caiobraz.artista.repository.ArtistaAlbumRepository;
 
 @RequiredArgsConstructor

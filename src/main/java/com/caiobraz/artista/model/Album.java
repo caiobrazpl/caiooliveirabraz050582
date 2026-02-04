@@ -1,4 +1,4 @@
-package com.caiobraz.artista.entity;
+package com.caiobraz.artista.model;
 
 import java.util.List;
 
@@ -14,14 +14,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import com.caiobraz.artista.entity.enums.TipoArtista;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "ARTISTA")
-public class Artista {
+@Table(name = "ALBUM")
+public class Album {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,16 +29,17 @@ public class Artista {
     @Column(name = "NOME")
     private String nome;
 
-    @Column(name = "TIPO")
-    private TipoArtista tipoArtista;
-
     @Column(name = "ATIVO")
     private Boolean ativo;
 
-    @OneToMany(mappedBy = "artista")
+    @OneToMany(mappedBy = "album")
     private List<ArtistaAlbum> artistaAlbums;
 
-    public Artista(String nome) {
+    public Album(Long id) {
+        this.id = id;
+    }
+
+    public Album(String nome) {
         this.nome = nome;
     }
 }

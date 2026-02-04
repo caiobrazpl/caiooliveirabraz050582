@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.caiobraz.artista.controller.dto.ArtistaRequestDTO;
 import com.caiobraz.artista.controller.dto.VincularAlbumRequestDTO;
-import com.caiobraz.artista.entity.Artista;
+import com.caiobraz.artista.model.Artista;
 import com.caiobraz.artista.repository.ArtistaRepository;
 import com.caiobraz.artista.service.exception.NotFoundException;
 

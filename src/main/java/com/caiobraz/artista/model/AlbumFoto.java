@@ -1,4 +1,6 @@
-package com.caiobraz.artista.entity;
+package com.caiobraz.artista.model;
+
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,24 +17,24 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "TOKEN")
-public class Token {
+@Table(name = "ALBUM_FOTO")
+public class AlbumFoto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "TOKEN")
-    private String token;
-
-    @Column(name = "REVOGADO")
-    private Boolean revogado;
-
-    @Column(name = "EXPIRADO")
-    private Boolean expirado;
-
     @ManyToOne
-    @JoinColumn(name = "ID_USUARIO")
-    private Usuario usuario;
+    @JoinColumn(name = "ID_ALBUM")
+    private Album album;
+
+    @Column(name = "HASH")
+    private String hash;
+
+    @Column(name = "BUCKET")
+    private String bucket;
+
+    @Column(name = "DATA_UPLOAD")
+    private LocalDateTime dataUpload;
 }

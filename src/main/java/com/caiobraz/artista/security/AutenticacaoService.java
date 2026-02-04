@@ -4,8 +4,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import com.caiobraz.artista.entity.Token;
-import com.caiobraz.artista.entity.Usuario;
+import com.caiobraz.artista.model.Token;
+import com.caiobraz.artista.model.Usuario;
 import com.caiobraz.artista.repository.TokenRepository;
 import com.caiobraz.artista.repository.UsuarioRepository;
 import com.caiobraz.artista.security.dto.AuthRequest;

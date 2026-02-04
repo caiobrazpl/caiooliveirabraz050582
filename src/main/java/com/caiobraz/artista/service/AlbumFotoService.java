@@ -8,8 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 
-import com.caiobraz.artista.entity.Album;
-import com.caiobraz.artista.entity.AlbumFoto;
+import com.caiobraz.artista.model.Album;
+import com.caiobraz.artista.model.AlbumFoto;
 import com.caiobraz.artista.repository.AlbumFotoRepository;
 
 @RequiredArgsConstructor

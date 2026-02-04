@@ -25,7 +25,7 @@ import com.caiobraz.artista.controller.dto.AlbumListDTO;
 import com.caiobraz.artista.controller.dto.AlbumRequestDTO;
 import com.caiobraz.artista.controller.dto.Paginacao;
 import com.caiobraz.artista.controller.dto.ResponseListDTO;
-import com.caiobraz.artista.entity.enums.TipoArtista;
+import com.caiobraz.artista.model.enums.TipoArtista;
 import com.caiobraz.artista.service.AlbumService;
 
 @RequiredArgsConstructor

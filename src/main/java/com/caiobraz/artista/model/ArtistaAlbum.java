@@ -1,6 +1,4 @@
-package com.caiobraz.artista.entity;
-
-import java.time.LocalDateTime;
+package com.caiobraz.artista.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,8 +15,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "ALBUM_FOTO")
-public class AlbumFoto {
+@Table(name = "ARTISTA_ALBUM")
+public class ArtistaAlbum {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,15 +24,10 @@ public class AlbumFoto {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "ID_ARTISTA")
+    private Artista artista;
+
+    @ManyToOne
     @JoinColumn(name = "ID_ALBUM")
     private Album album;
-
-    @Column(name = "HASH")
-    private String hash;
-
-    @Column(name = "BUCKET")
-    private String bucket;
-
-    @Column(name = "DATA_UPLOAD")
-    private LocalDateTime dataUpload;
 }

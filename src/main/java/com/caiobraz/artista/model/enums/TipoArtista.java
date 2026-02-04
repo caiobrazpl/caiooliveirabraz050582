@@ -1,4 +1,4 @@
-package com.caiobraz.artista.entity.enums;
+package com.caiobraz.artista.model.enums;
 
 import java.util.stream.Stream;
 
