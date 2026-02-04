@@ -41,7 +41,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests((authorize) -> {
                     authorize.requestMatchers(AUTH_WHITELIST).permitAll();
                     authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
@@ -52,7 +53,6 @@ public class SecurityConfig {
                 .addFilterBefore(this.rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
 //                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(jwtDecoder()).jwtAuthenticationConverter(jwtAuthenticationConverter())))
 //                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .httpBasic(Customizer.withDefaults())
         ;
 
         return http.build();
