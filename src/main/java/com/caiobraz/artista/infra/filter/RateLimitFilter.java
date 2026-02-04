@@ -1,4 +1,4 @@
-package com.caiobraz.artista.config.filter;
+package com.caiobraz.artista.infra.filter;
 
 import java.io.IOException;
 import java.time.Duration;

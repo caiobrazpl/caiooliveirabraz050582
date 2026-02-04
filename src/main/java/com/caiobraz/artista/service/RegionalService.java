@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import com.caiobraz.artista.integration.RegionalClient;
-import com.caiobraz.artista.integration.dto.RegionalDTO;
+import com.caiobraz.artista.client.RegionalClient;
+import com.caiobraz.artista.client.dto.RegionalDTO;
 import com.caiobraz.artista.model.Regional;
 import com.caiobraz.artista.repository.RegionalRepository;
 

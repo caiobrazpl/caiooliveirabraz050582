@@ -1,4 +1,4 @@
-package com.caiobraz.artista.integration;
+package com.caiobraz.artista.client;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import lombok.RequiredArgsConstructor;
 
-import com.caiobraz.artista.integration.dto.RegionalDTO;
+import com.caiobraz.artista.client.dto.RegionalDTO;
 
 @RequiredArgsConstructor
 @Component

@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 
-import com.caiobraz.artista.config.filter.RateLimitFilter;
+import com.caiobraz.artista.infra.filter.RateLimitFilter;
 import com.caiobraz.artista.service.UsuarioService;
 
 @RequiredArgsConstructor
