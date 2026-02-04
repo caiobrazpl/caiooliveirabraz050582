@@ -3,7 +3,7 @@ package com.caiobraz.artista.controller.dto;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
-import com.caiobraz.artista.entity.Artista;
+import com.caiobraz.artista.model.Artista;
 
 public record ArtistaRequestDTO(@NotEmpty @Size(max = 100, min = 1) String nome) {
 

@@ -2,7 +2,7 @@ package com.caiobraz.artista.controller.dto;
 
 import java.util.List;
 
-import com.caiobraz.artista.entity.Artista;
+import com.caiobraz.artista.model.Artista;
 
 public record ArtistaListDTO(Long id, String nome, String tipoArtista, List<AlbumArtistaListDTO> albums) {
 

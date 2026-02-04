@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,12 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 
 import com.caiobraz.artista.controller.dto.AlbumRequestDTO;
-import com.caiobraz.artista.entity.Album;
-import com.caiobraz.artista.entity.enums.TipoArtista;
+import com.caiobraz.artista.model.Album;
+import com.caiobraz.artista.model.enums.TipoArtista;
 import com.caiobraz.artista.repository.AlbumRepository;
 import com.caiobraz.artista.service.exception.NotFoundException;
-
-import static com.caiobraz.artista.service.util.ExampleMatcherUtil.defaultMatcher;
 
 @RequiredArgsConstructor
 @Service
@@ -39,10 +36,10 @@ public class AlbumService {
                 .orElseThrow(() -> new NotFoundException("erro.naoEncontrado"));
     }
 
-    public Page<Album> listar(String nome, String tipoArtista, Pageable pageable) {
+    public Page<Album> listar(String nome, TipoArtista tipoArtista, Pageable pageable) {
         return albumRepository.listar(
                 StringUtils.isEmpty(nome) ? null : "%" + nome + "%",
-                StringUtils.isEmpty(tipoArtista) ? null : TipoArtista.byDescricao(tipoArtista),
+                tipoArtista,
                 pageable
         );
     }

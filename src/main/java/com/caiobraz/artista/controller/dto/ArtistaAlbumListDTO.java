@@ -1,6 +1,6 @@
 package com.caiobraz.artista.controller.dto;
 
-import com.caiobraz.artista.entity.Artista;
+import com.caiobraz.artista.model.Artista;
 
 public record ArtistaAlbumListDTO(Long id, String nome, String tipoArtista) {
 

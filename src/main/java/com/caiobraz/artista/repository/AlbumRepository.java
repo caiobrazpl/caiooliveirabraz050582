@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.caiobraz.artista.entity.Album;
-import com.caiobraz.artista.entity.enums.TipoArtista;
+import com.caiobraz.artista.model.Album;
+import com.caiobraz.artista.model.enums.TipoArtista;
 
 @Repository
 public interface AlbumRepository extends JpaRepository<Album, Long> {

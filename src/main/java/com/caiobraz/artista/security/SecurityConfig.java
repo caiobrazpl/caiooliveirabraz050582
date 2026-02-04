@@ -22,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 
+import com.caiobraz.artista.config.filter.RateLimitFilter;
 import com.caiobraz.artista.service.UsuarioService;
 
 @RequiredArgsConstructor
@@ -32,6 +33,7 @@ public class SecurityConfig {
 
     private final UsuarioService usuarioService;
     private final AutenticacaoJwtFilter autenticacaoJwtFilter;
+    private final RateLimitFilter rateLimitFilter;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -39,7 +41,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests((authorize) -> {
                     authorize.requestMatchers(AUTH_WHITELIST).permitAll();
                     authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
@@ -47,9 +50,9 @@ public class SecurityConfig {
                 })
                 .userDetailsService(this.usuarioService)
                 .addFilterBefore(this.autenticacaoJwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(this.rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
 //                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(jwtDecoder()).jwtAuthenticationConverter(jwtAuthenticationConverter())))
 //                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .httpBasic(Customizer.withDefaults())
         ;
 
         return http.build();
@@ -82,10 +85,10 @@ public class SecurityConfig {
     }
 
     private static final String[] AUTH_WHITELIST = {
+            "/v1/auth/**",
             "/v3/api-docs/**",
             "/swagger-ui.html",
             "/configuration/ui",
-            "/auth/**",
             "/swagger-ui/**",
             "/csrf",
             "/"

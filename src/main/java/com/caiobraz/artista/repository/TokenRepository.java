@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.caiobraz.artista.entity.Token;
+import com.caiobraz.artista.model.Token;
 
 @Repository
 public interface TokenRepository extends JpaRepository<Token, Long> {
