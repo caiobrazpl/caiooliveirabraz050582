@@ -18,12 +18,15 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String secret;
 
+    @Value("${jwt.expiration-minutes}")
+    private Long expiration;
+
     public String generateToken(UserDetails userDetails) {
-        return buildToken(userDetails, 1000 * 60 * 5);// 5 minutos
+        return buildToken(userDetails, 1000 * 60 * expiration);
     }
 
     public String generateRefreshToken(UserDetails userDetails) {
-        return buildToken(userDetails, 1000 * 60 * 10);// 10 minutos
+        return buildToken(userDetails, 1000 * 60 * expiration);
     }
 
     private String buildToken(UserDetails userDetails, long expiration) {
