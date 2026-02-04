@@ -149,7 +149,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ProblemDetail tratarHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
         String mensagem = getMessage(exception);
-        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, mensagem);
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, mensagem);
     }
 
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
