@@ -1,4 +1,4 @@
-package com.caiobraz.artista.config;
+package com.caiobraz.artista.infra.config;
 
 
 import org.springframework.context.annotation.Bean;

@@ -17,6 +17,7 @@ import com.caiobraz.artista.model.Album;
 import com.caiobraz.artista.model.enums.TipoArtista;
 import com.caiobraz.artista.repository.AlbumRepository;
 import com.caiobraz.artista.service.exception.NotFoundException;
+import com.caiobraz.artista.ws.AlbumWebSocketPublisher;
 
 @RequiredArgsConstructor
 @Service
@@ -25,6 +26,7 @@ public class AlbumService {
     private final AlbumRepository albumRepository;
     private final AlbumFotoService albumFotoService;
     private final MinioService minioService;
+    private final AlbumWebSocketPublisher albumPublisher;
 
     public Album buscarPorId(Long id) {
         return albumRepository.findById(id)
@@ -46,20 +48,21 @@ public class AlbumService {
 
     @Transactional
     public Long criar(AlbumRequestDTO requestDTO) {
-        var artista = requestDTO.entidade();
-        artista.setAtivo(true);
+        var album = requestDTO.entidade();
+        album.setAtivo(true);
 
-        this.albumRepository.save(artista);
+        this.albumRepository.save(album);
+        this.albumPublisher.notificarNovoAlbum(album);
 
-        return artista.getId();
+        return album.getId();
     }
 
     @Transactional
     public void editar(Long id, AlbumRequestDTO requestDTO) {
-        var artista = requestDTO.entidade();
+        var album = requestDTO.entidade();
 
         var artistaAlterado = this.buscarPorId(id);
-        artistaAlterado.setNome(artista.getNome());
+        artistaAlterado.setNome(album.getNome());
 
         this.albumRepository.save(artistaAlterado);
     }

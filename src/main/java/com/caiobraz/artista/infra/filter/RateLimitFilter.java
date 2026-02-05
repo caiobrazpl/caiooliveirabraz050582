@@ -1,4 +1,4 @@
-package com.caiobraz.artista.config.filter;
+package com.caiobraz.artista.infra.filter;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -52,7 +52,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
     private Bucket criarBucket(String usuario) {
         Bandwidth limit = Bandwidth.builder()
                 .capacity(10)
-                .refillGreedy(10, Duration.ofMinutes(1))
+                .refillIntervally(10, Duration.ofMinutes(1))
                 .build();
 
         return Bucket.builder()
@@ -67,6 +67,6 @@ public class RateLimitFilter extends OncePerRequestFilter {
             return null;
         }
 
-        return auth.getName(); // normalmente username ou userId do JWT
+        return auth.getName();
     }
 }

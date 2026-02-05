@@ -1,4 +1,4 @@
-package com.caiobraz.artista.task;
+package com.caiobraz.artista.infra.task;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

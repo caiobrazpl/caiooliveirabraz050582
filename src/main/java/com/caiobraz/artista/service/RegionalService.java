@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import com.caiobraz.artista.integration.RegionalClient;
-import com.caiobraz.artista.integration.dto.RegionalDTO;
+import com.caiobraz.artista.client.RegionalClient;
+import com.caiobraz.artista.client.dto.RegionalDTO;
 import com.caiobraz.artista.model.Regional;
 import com.caiobraz.artista.repository.RegionalRepository;
 
@@ -47,10 +47,7 @@ public class RegionalService {
         var interno = optInterno.get();
 
         if (interno.getNome().equals(regionalDTO.getNome().trim())) {
-            log.info("Regional interna encontrada e idêntica. {} - {}",
-                    regionalDTO.getId(), regionalDTO.getNome());
-            interno.setAtivo(true);
-            this.repository.save(interno);
+            log.info("Regional interna encontrada e idêntica. {} - {}", regionalDTO.getId(), regionalDTO.getNome());
             return;
         }
 

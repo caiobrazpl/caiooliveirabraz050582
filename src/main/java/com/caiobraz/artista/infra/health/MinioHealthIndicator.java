@@ -1,4 +1,4 @@
-package com.caiobraz.artista.config.health;
+package com.caiobraz.artista.infra.health;
 
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.stereotype.Component;

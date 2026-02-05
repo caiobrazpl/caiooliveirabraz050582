@@ -1,4 +1,4 @@
-package com.caiobraz.artista.integration.dto;
+package com.caiobraz.artista.client.dto;
 
 import lombok.Getter;
 
