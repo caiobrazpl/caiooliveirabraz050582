@@ -1,6 +1,8 @@
 package com.caiobraz.artista.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,5 +34,17 @@ public class AlbumFotoService {
         albumFoto.setBucket(this.bucket);
 
         return this.albumFotoRepository.save(albumFoto);
+    }
+
+    public List<String> buscarFotosAlgum(Album album) {
+        var fotos = new ArrayList<String>();
+        var albumFotos = albumFotoRepository.findByAlbumId(album.getId());
+
+        for (AlbumFoto albumFoto : albumFotos) {
+            var url = minioService.buscarUrlArquivo(albumFoto.getBucket(), albumFoto.getHash());
+            fotos.add(url);
+        }
+
+        return fotos;
     }
 }

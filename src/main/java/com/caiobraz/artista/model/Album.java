@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,9 @@ public class Album {
 
     @OneToMany(mappedBy = "album")
     private List<ArtistaAlbum> artistaAlbums;
+
+    @Transient
+    private List<String> fotos;
 
     public Album(Long id) {
         this.id = id;

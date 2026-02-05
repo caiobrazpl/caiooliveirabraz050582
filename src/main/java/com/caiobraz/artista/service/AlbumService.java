@@ -38,6 +38,15 @@ public class AlbumService {
                 .orElseThrow(() -> new NotFoundException("erro.naoEncontrado"));
     }
 
+    public Album detalhar(Long id) {
+        var album =  albumRepository.findByIdAndAtivo(id, true)
+                .orElseThrow(() -> new NotFoundException("erro.naoEncontrado"));
+
+        album.setFotos(albumFotoService.buscarFotosAlgum(album));
+
+        return album;
+    }
+
     public Page<Album> listar(String nome, TipoArtista tipoArtista, Pageable pageable) {
         return albumRepository.listar(
                 StringUtils.isEmpty(nome) ? null : "%" + nome + "%",
