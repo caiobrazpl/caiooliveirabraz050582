@@ -24,7 +24,9 @@ public class AutenticacaoService {
     private final AuthenticationManager authManager;
 
     public AuthResponse authenticate(AuthRequest request) {
-        Usuario usuario = usuarioRepository.findByUsername(request.username()).orElseThrow();
+        Usuario usuario = usuarioRepository.findByUsername(request.username())
+                .orElseThrow(() -> new AuthException("Usuário não encontrado."));
+
         String jwt = jwtService.generateToken(usuario);
         String refresh = jwtService.generateRefreshToken(usuario);
 
