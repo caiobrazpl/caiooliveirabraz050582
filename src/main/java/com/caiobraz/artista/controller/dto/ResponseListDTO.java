@@ -6,11 +6,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Getter
 public class ResponseListDTO<T> {
 
-    private final List<T> dados;
+    private List<T> dados;
     private Paginacao paginacao;
 
     public ResponseListDTO(List<T> dados) {

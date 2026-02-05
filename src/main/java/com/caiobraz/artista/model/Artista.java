@@ -40,7 +40,8 @@ public class Artista {
     @OneToMany(mappedBy = "artista")
     private List<ArtistaAlbum> artistaAlbums;
 
-    public Artista(String nome) {
+    public Artista(String nome, TipoArtista tipoArtista) {
         this.nome = nome;
+        this.tipoArtista = tipoArtista;
     }
 }
