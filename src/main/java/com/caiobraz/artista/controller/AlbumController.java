@@ -67,7 +67,7 @@ public class AlbumController {
                     required = true
             )
             @PathVariable Long id) {
-        var registro = this.albumService.buscarAtivo(id);
+        var registro = this.albumService.detalhar(id);
 
         return ResponseEntity.ok(new AlbumListDTO(registro));
     }
@@ -91,7 +91,7 @@ public class AlbumController {
             @Parameter(
                     in = ParameterIn.QUERY,
                     description = "Filtro por nome do álbum (opcional). Pode ser parcial.",
-                    example = "Guns"
+                    example = "Illusion"
             )
             @RequestParam(required = false) String nome,
             @Parameter(
@@ -178,7 +178,7 @@ public class AlbumController {
             @ApiResponse(responseCode = "415", description = "Tipo de mídia não suportado"),
     })
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
-    @PutMapping("/{id}/fotos")
+    @PutMapping(value = "/{id}/fotos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<List<String>> uploadFoto(
             @Parameter(in = ParameterIn.PATH, description = "ID do álbum", example = "10", required = true)
             @PathVariable Long id,

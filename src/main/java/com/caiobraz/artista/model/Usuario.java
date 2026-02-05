@@ -31,10 +31,10 @@ public class Usuario implements UserDetails {
     private Long id;
 
     @Column(name = "LOGIN")
-    private String username;
+    private String login;
 
     @Column(name = "SENHA")
-    private String password;
+    private String senha;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "PERFIL")
@@ -46,6 +46,16 @@ public class Usuario implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + perfil.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.login;
     }
 
     @Override
@@ -61,6 +71,11 @@ public class Usuario implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.isAtivo();
     }
 
     public Boolean isAtivo() {

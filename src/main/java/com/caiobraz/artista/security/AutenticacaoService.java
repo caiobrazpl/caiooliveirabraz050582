@@ -23,7 +23,7 @@ public class AutenticacaoService {
     private final AuthenticationManager authManager;
 
     public AuthResponse authenticate(AuthRequest request) {
-        Usuario usuario = this.usuarioRepository.findByUsername(request.username())
+        Usuario usuario = this.usuarioRepository.findByLogin(request.login())
                 .orElseThrow(() -> new AuthException("Usuário não encontrado."));
 
         String jwt = this.jwtService.generateToken(usuario);
@@ -32,7 +32,7 @@ public class AutenticacaoService {
         this.tokenService.criarToken(usuario, refresh);
 
         this.authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.username(), request.password(), usuario.getAuthorities())
+                new UsernamePasswordAuthenticationToken(request.login(), request.senha(), usuario.getAuthorities())
         );
 
         return new AuthResponse(jwt, refresh);
@@ -40,7 +40,7 @@ public class AutenticacaoService {
 
     public AuthResponse refreshToken(String refreshToken) {
         var username = this.jwtService.extractUsername(refreshToken);
-        var user = this.usuarioRepository.findByUsername(username).orElseThrow();
+        var user = this.usuarioRepository.findByLogin(username).orElseThrow();
 
         String newAccess = this.jwtService.generateToken(user);
         String newRefresh = this.jwtService.generateRefreshToken(user);
