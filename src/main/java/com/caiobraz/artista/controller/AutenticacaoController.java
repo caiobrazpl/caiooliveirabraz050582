@@ -52,10 +52,11 @@ public class AutenticacaoController {
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = AuthRequest.class),
-                            examples = @ExampleObject(value = "{\"username\": \"admin\", \"password\": \"Senha@123\"}")
+                            examples = @ExampleObject(value = "{\"login\": \"admin\", \"senha\": \"admin123\"}")
                     )
             )
             @Valid @RequestBody AuthRequest request) {
+
         return ResponseEntity.ok(autenticacaoService.authenticate(request));
     }
 
@@ -83,6 +84,7 @@ public class AutenticacaoController {
                     )
             )
             @Valid @RequestBody RefreshRequest request) {
+
         return ResponseEntity.ok(autenticacaoService.refreshToken(request.refreshToken()));
     }
 }
