@@ -91,6 +91,7 @@ public class SecurityConfig {
             "/configuration/ui",
             "/swagger-ui/**",
             "/csrf",
+            "/ws/**",
             "/"
     };
 }

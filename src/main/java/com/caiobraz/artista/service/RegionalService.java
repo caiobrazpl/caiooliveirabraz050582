@@ -47,10 +47,7 @@ public class RegionalService {
         var interno = optInterno.get();
 
         if (interno.getNome().equals(regionalDTO.getNome().trim())) {
-            log.info("Regional interna encontrada e idêntica. {} - {}",
-                    regionalDTO.getId(), regionalDTO.getNome());
-            interno.setAtivo(true);
-            this.repository.save(interno);
+            log.info("Regional interna encontrada e idêntica. {} - {}", regionalDTO.getId(), regionalDTO.getNome());
             return;
         }
 
