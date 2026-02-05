@@ -15,7 +15,7 @@ public class RegionalScheduler {
 
     private final RegionalService regionalService;
 
-    @Scheduled(cron = "0 0 * * * *")// a cada hora
+    @Scheduled(cron = "0 */5 * * * *")
     public void executarSync() {
         try {
             log.info("Iniciando sincronização de regionais...");

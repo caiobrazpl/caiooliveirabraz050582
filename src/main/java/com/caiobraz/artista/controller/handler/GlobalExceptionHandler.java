@@ -76,12 +76,12 @@ public class GlobalExceptionHandler {
         return errorDetail;
     }
 
-    @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(AuthException.class)
     public ProblemDetail handleAccessDeniedException(AuthException exception) {
         String mensagem = getMessage(exception);
 
-        return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, mensagem);
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, mensagem);
     }
 
     @ResponseStatus(code = HttpStatus.FORBIDDEN)
